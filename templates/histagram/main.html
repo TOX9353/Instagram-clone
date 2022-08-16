@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{#    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>#}
+
+    <style>
+        body {
+            background-color: #fafafa;
+            font-family: DalseoHealingBold;
+        }
+
+        @font-face {
+            font-family: "DalseoHealingBold"; /*font 이름*/
+            font-style: normal; /* font 스타일 정의 (기울임, 일반) */
+            font-weight: 400; /* font 굵기 정의 */
+            src: url("DalseoHealingBold.ttf") format("ttf");
+        }
+
+        .box {
+            width: 40px;
+            height: 40px;
+            border-radius: 70%;
+            overflow: hidden;
+        }
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .curser {
+            cursor: pointer;
+        }
+        .display_flex {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .display_flex_jc_center {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .display_flex_jc_S_between{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .main_content_size {
+            display: flex;
+            flex-direction: column;
+            width: 600px;
+            height: 1000px;
+            padding-top: 70px;
+        }
+        .feed_1 {
+            border: solid 1px #bdbdbd;
+            border-radius: 12px;
+            background-color: white;
+            margin-bottom: 35px;
+        }
+        .feed_2 {
+            margin: 15px;
+        }
+        .feed_profile_img {
+            background: #BDBDBD;
+            margin-right: 10px;
+        }
+        .feed_img {
+            max-width:600px;
+            max-height: 600px;
+            object-fit: contain;
+        }
+        .feed_material {
+            margin: 15px 15px;
+        }
+        .feed_material_font {
+            font-size: 30px;
+        }
+        .feed_user_text {
+            text-align: left;
+            font-size: 16px;
+            margin-left: 15px;
+        }
+        .feed_input_style {
+            border-top: solid 1px #bdbdbd;
+            margin-top: 15px;
+            padding: 10px;
+        }
+        .feed_input {
+            border-radius: 12px;
+            box-shadow: none;
+            border: none;
+        }
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+        }
+        .modal_window {
+            display: block;
+            align-items: center;
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 60%;
+            height: 67%;
+            position: relative;
+            padding: 10px;
+        }
+        .modal_title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .modal_title_side {
+            flex: 0 0 40px;
+            text-align: center;
+        }
+
+        .modal_image_upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s ease-in-out;
+            width: 93%;
+            height: 90%;
+            font-size: 40px;
+            color: dimgray;
+        }
+        .modal_image_upload_main {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 95%;
+            position:relative;
+        }
+
+        .noDrag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            outline: 2px dashed black;
+            text-align: center;
+            transition: all .15s ease-in-out;
+            position: absolute;
+            width: 93%;
+            height: 90%;
+        }
+
+        .modal_image_review {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            height: 95%;
+            width: 40%;
+        }
+
+        .modal_input_style {
+            height: 95%;
+            width: 100%;
+        }
+
+        .modal_input {
+            border: 3.5px solid dimgray;
+            border-radius: 12px;
+            box-shadow: none;
+            height: 103%;
+            width: 100%;
+            outline: none;
+            resize: none;
+            font-size: 25px;
+            padding: 10px;
+        }
+
+        .modal_image_review_close {
+            height: 99%;
+        }
+
+        .modal_btn {
+            width: 100%;
+            border-radius: 8px;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border: 3px solid dimgray;
+            background-color: white;
+        }
+    </style>
+
+    <title>instagram clone coding</title>
+
+</head>
+<body>
+{#ㅡㅡㅡ 네비 바 ㅡㅡㅡ#}
+<div class="navbar navbar-expand-lg navbar-light" style="background-color: white; padding-top: 41px">
+    <div class="container-fluid"
+         style="display:flex;flex-direction:row;align-items:center;justify-content:space-around;width:100%;height: 77px;border-bottom:solid 1px #bdbdbd;flex-wrap:nowrap;position:fixed;top:0;background-color:white;">
+        <div>
+            <a class="navbar-brand curser" href="#">
+                <img style="width: 150px;" src="https://fontmeme.com/images/instagram-new-logo.png" alt="">
+            </a>
+        </div>
+        <form class="d-flex" style="width:350px; height: 50px; ">
+            <input class="form-control me-2" type="search" placeholder="검색" aria-label="search" style=" font-size:20px; box-shadow: none; border:none; border-radius: 11px; background-color: #efefef">
+        </form>
+        <div>
+            <span class="material-icons curser" style="font-size: 38px; margin-right: 10px;" >home</span>
+            <span class="material-icons-outlined curser" style="font-size: 38px; margin-right: 10px;">send</span>
+            <span id="nav_add_box" class="material-icons-outlined curser" style="font-size: 38px; margin-right: 10px;" >add_box</span>
+            <span class="material-icons-outlined curser" style="font-size: 38px; margin-right: 10px;" >explore</span>
+            <span class="material-icons-outlined curser" style="font-size: 38px; margin-right: 10px;" >favorite_border</span>
+        </div>
+    </div>
+</div>
+{#ㅡㅡㅡ 네비 바 끝 ㅡㅡㅡ#}
+
+{#ㅡㅡㅡㅡ 피드박스 ㅡㅡㅡㅡ#}
+<div class="display_flex_jc_center">
+    <div class="main_content_size">
+        {%  for feed in feeds %}
+        <article class="feed_1">
+            <div class="display_flex feed_2 ">
+                <div class="box feed_profile_img curser">
+                    <img class="profile" src="{{feed.profile_image}}" alt="">
+                </div>
+                <div class="curser">
+                    <b>{{ feed.user_id }}</b>
+                </div>
+            </div>
+            <div>
+                <img class="profile feed_img" src="{{ feed.image }}" alt="">
+            </div>
+            <div class="display_flex_jc_S_between feed_material">
+                <div>
+                    <span class="material-icons-outlined feed_material_font curser">favorite_border</span>
+                    <span class="material-icons-outlined feed_material_font curser">mode_comment</span>
+                    <span class="material-icons-outlined feed_material_font curser">send</span>
+                </div>
+                <div>
+                    <span class="material-icons-outlined curser" style="font-size: 30px;">bookmark_border</span>
+                </div>
+            </div>
+            <div class="feed_user_text"> 쨔쨔 <b>외 19명</b>이 좋아합니다.</div>
+            <div class="feed_user_text"> <b>{{ feed.user_id }}</b> {{ feed.content }}</div>
+            <div>
+                <div class="feed_user_text"> <b>aaaaa</b> 나도 제주도 가고싶다</div>
+                <div class="feed_user_text"> <b>bbbbb</b> 제주도는 어디야?</div>
+            </div>
+            <div class="feed_input_style">
+                <input type="text" class="form-control feed_input" id="exampleFormControlInput1" placeholder="댓글 달기..">
+            </div>
+        </article>
+        {% endfor %}
+{#ㅡㅡㅡㅡ 피드박스 끝 ㅡㅡㅡㅡ#}
+    </div>
+
+{#ㅡㅡㅡㅡ회원추천피드ㅡㅡㅡㅡ#}
+    <div style="width: 450px; height: 1000px;padding-top: 70px">
+        <div>
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px;">
+                <div class="box curser" style="background: #BDBDBD; margin-right: 10px; width: 65px;height: 65px;">
+                    <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                </div>
+                <div class="curser">
+                    <b>hyun.93</b>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+                <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; font-size: 17px; color: #aaaaaa; ">
+                    <b>회원님을 위한 추천</b>
+                </div>
+                <div class="curser" style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; font-size: 16px;">
+                    <b>모두 보기</b>
+                </div>
+            </div>
+
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row; ">
+                    <div class="box" style="background: #BDBDBD; margin-right: 10px; width: 40px;height: 40px;">
+                        <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                    </div>
+                    <div style="text-align: left;">
+                        <div>
+                            <b>aaaaa</b>
+                        </div>
+                        <div style="font-size: 13px; color: #BDBDBD">
+                            제주도 같이 가기로함
+                        </div>
+                    </div>
+                </div>
+                <div class="curser" style="padding-right: 22px; color: #3aacf7">
+                    <b>팔로우</b>
+                </div>
+            </div>
+
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row; ">
+                    <div class="box" style="background: #BDBDBD; margin-right: 10px; width: 40px;height: 40px;">
+                        <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                    </div>
+                    <div style="text-align: left;">
+                        <div>
+                            <b>bbbbb</b>
+                        </div>
+                        <div style="font-size: 13px; color: #BDBDBD">
+                            제주도 같이 가기로함
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-right: 22px; color: #3aacf7">
+                    <b>팔로우</b>
+                </div>
+            </div>
+
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row; ">
+                    <div class="box" style="background: #BDBDBD; margin-right: 10px; width: 40px;height: 40px;">
+                        <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                    </div>
+                    <div style="text-align: left;">
+                        <div>
+                            <b>ccccc</b>
+                        </div>
+                        <div style="font-size: 13px; color: #BDBDBD">
+                            제주도 같이 가기로함
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-right: 22px; color: #3aacf7">
+                    <b>팔로우</b>
+                </div>
+            </div>
+
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row; ">
+                    <div class="box" style="background: #BDBDBD; margin-right: 10px; width: 40px;height: 40px;">
+                        <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                    </div>
+                    <div style="text-align: left;">
+                        <div>
+                            <b>ddddd</b>
+                        </div>
+                        <div style="font-size: 13px; color: #BDBDBD">
+                            제주도 같이 가기로함
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-right: 22px; color: #3aacf7">
+                    <b>팔로우</b>
+                </div>
+            </div>
+
+            <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row; ">
+                    <div class="box" style="background: #BDBDBD; margin-right: 10px; width: 40px;height: 40px;">
+                        <img class="profile" src="http://www.gocarinca.com/source/img/user/default_profile_image.jpg" alt="">
+                    </div>
+                    <div style="text-align: left;">
+                        <div>
+                            <b>eeeee</b>
+                        </div>
+                        <div style="font-size: 13px; color: #BDBDBD">
+                            제주도 같이 가기로함
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-right: 22px; color: #3aacf7">
+                    <b>팔로우</b>
+                </div>
+            </div>
+
+        </div>
+            <div style=" display: flex; flex-direction: row; align-items: center; text-align: left; margin: 5px 0 15px 55px; font-size: 10px; color: #dbdbdb ">
+                소개·도움말·홍보 센터·API·채용 정보·<br>개인정보처리방침·약관·위치·언어·<br><br>© 2022 INSTAGRAM FROM META
+            </div>
+        </div>
+{#ㅡㅡㅡㅡ회원추천피드 끝ㅡㅡㅡㅡ#}
+</div>
+
+
+<div id="modal_add_feed" class="modal_overlay">
+    <div class="modal_window">
+        <div class="modal_title">
+            <div class="modal_title_side"></div>
+            <div> 새 게시물 </div>
+            <div class="modal_title_side">
+                <span id="close_modal" class="material-icons-outlined curser">
+                    close
+                </span>
+            </div>
+        </div>
+        <div class="modal_image_upload_main display_flex">
+            <div class="modal_image_upload">
+                <img class="modal_imgup_icon" style="width: 8%;" src="https://cdn-icons-png.flaticon.com/512/5089/5089762.png" alt="" draggable="false">
+                <h1 class="modal_imgup_icon">사진을 여기에 끌어다 놓으세요</h1>
+            </div>
+            <div class="noDrag"></div>
+        </div>
+        <div class="modal_image_review">
+            <div style=" display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 90%;">
+                <div class="modal_input_style">
+                    <textarea class="modal_input" placeholder="내용 입력.." style="font-size: 20px">
+                    </textarea>
+                </div>
+                <div style="width: 100%; margin: -2px;">
+                    <button type="button" class="btn btn-default modal_btn">보내기</button>
+                </div>
+            </div>
+{#            <div class="modal_image_review_close">#}
+{#                <span id="modal_image_review_close" class="material-icons-outlined curser">close</span>#}
+{#            </div>#}
+        </div>
+        <div class="modal_image_review_close">
+            <span id="modal_image_review_close" class="material-icons-outlined curser">close</span>
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+<script>
+    $('#nav_add_box').click(function () {
+        {# jquery scroll 위치 이동 $('html, body').animate({scrollTop: 0}, 1);#}
+        $('html, body').animate({scrollTop: 0}, 1);
+        $('.modal_overlay').css({display: 'flex'}); {#제이쿼리 css 속성값 여러개 선택가능#}
+        $('.modal_imgup_icon').css({display: 'flex'}); {#제이쿼리 css 속성값 1개만 선택가능#}
+        $('.noDrag').css({outline: '2px dashed black'});
+        {#$('body').css('overflow', 'hidden'); -- 스크롤 없애기 -- #}
+    });
+
+    $('#close_modal').click(function () {
+        $('.modal_overlay').css({display: 'none'});
+        $('.noDrag').css('background-image', 'none');
+        {#$('.modal_imgup_icon').css('background-image', 'none');#}
+        {#$('body').css('overflow', 'scroll'); -- 스크롤 만들기 -- #}
+    });
+    $('.modal_image_review_close').click(function () {
+        $('.modal_overlay').css({display: 'none'});
+        $('.modal_title').css({display: 'flex'});
+        $('.modal_window').css({display: 'block','flex-direction':'none'});
+        $('.modal_image_review').css({display: 'none'});
+        $('.noDrag').css('background-image', 'none');
+    });
+
+    $('.noDrag')
+    .on("dragover", dragOver)
+    .on("dragleave", dragOver)
+    .on("drop", uploadFiles);
+
+    function dragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (e.type == "dragover") {
+            $(e.target).css({width: "97%",height: "94%"});
+            $('.modal_imgup_icon').css({filter: "blur(1.5px)"});
+
+        } else {
+            $(e.target).css({filter: "none", width: "93%", height: "90%"});
+            $('.modal_imgup_icon').css({filter: "none"});
+            }
+        }
+
+    function uploadFiles(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        dragOver(e); //1
+
+        e.dataTransfer = e.originalEvent.dataTransfer; //2
+        var files = e.target.files || e.dataTransfer.files;
+
+
+        if (files.length > 1) {
+            alert('파일 하나만 올려주세요.');
+        }
+        if (files[0].type.match(/image.*/)) {
+            $(e.target).css({
+                "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                "outline": "none",
+                "background-size": "100% 100%",
+                "border":  "3px solid dimgray"
+            })
+            $('.modal_title').css({'display': 'none'})
+            $('.modal_window').css({'display': 'flex','flex-direction':'row'})
+            $('.modal_image_review').css({'display': 'flex'})
+            $('.modal_input').val('');
+        } else {
+            alert('이미지 파일이 아닙니다.');
+        }
+    }
+
+    $(document).ready(function () {
+        var currentPosition = parseInt($(".modal_overlay").css("top"));
+        $(window).scroll(function () {
+            var position = $(window).scrollTop();
+            $(".modal_overlay").stop().animate({"top": position + currentPosition + "px"}, 100);
+        });
+    });
+
+    {# 영상시간 4시간 26분 30초#}
+</script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<pre>
+1.db 종류 결정  ex) sqllite3
+2.content 파일에 db 모델 create (db모델  클래스명 FEED로 만듬)
+    ex) class Feed(models.Model): content = models.TextField()
+3.db모델 migrations 하기
+    ex) python manage.py makemigrations
+4.migration 한 모델 실행(migrate)
+    ex) python manage.py migrate
+5.만들어진 db안에 임의확인 자료 저장하기 (시스템상에서 저장)
+6.content.views에 db import하기
+    ex) from .models import Feed
+7.content.views에 APIView import하고 API만들기
+    ex) from rest_framework.views import APIView
+    ex) class 클래스명(APIView):
+            def get(self, request)
+                feed_list = Feed.object.all()
+                    # Feed.object.all()뒤에 order_by('-id')하게 되면 id값 역순으로 값을 보낸다.
+            return render(request,"메인.html",context=dict(사용명 =feed_list))
+8.메인 app폴더에 api import하기
+    ex) from content.views import Main (7번에서 만든 API)
+9.url패턴에 api호출하기
+    ex) path('', Main.as_view())
+10. 메인.HTML에서 값 넣을곳에 FOR 반복문 사용하여 dbkey값 넣기
+    {% for feed in feeds %}
+        {{ feed.db자료이름 }}
+    {%  endfor %}
+3:54:00
+</pre>
+</body>
+</html>
