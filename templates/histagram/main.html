@@ -15,7 +15,6 @@
     <style>
         body {
             background-color: #fafafa;
-            font-family: DalseoHealingBold;
         }
 
         @font-face {
@@ -206,8 +205,8 @@
         .modal_btn {
             width: 100%;
             border-radius: 8px;
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
             border: 3px solid dimgray;
             background-color: white;
         }
@@ -238,10 +237,9 @@
         </div>
     </div>
 </div>
-{#ㅡㅡㅡ 네비 바 끝 ㅡㅡㅡ#}
 
-{#ㅡㅡㅡㅡ 피드박스 ㅡㅡㅡㅡ#}
 <div class="display_flex_jc_center">
+{#ㅡㅡㅡㅡ 피드박스 ㅡㅡㅡㅡ#}
     <div class="main_content_size">
         {%  for feed in feeds %}
         <article class="feed_1">
@@ -277,10 +275,9 @@
             </div>
         </article>
         {% endfor %}
-{#ㅡㅡㅡㅡ 피드박스 끝 ㅡㅡㅡㅡ#}
     </div>
 
-{#ㅡㅡㅡㅡ회원추천피드ㅡㅡㅡㅡ#}
+{#ㅡㅡㅡㅡ 회원추천피드 ㅡㅡㅡㅡ#}
     <div style="width: 450px; height: 1000px;padding-top: 70px">
         <div>
             <div style=" display: flex; flex-direction: row; align-items: center; margin: 5px 0 15px 55px;">
@@ -401,10 +398,9 @@
                 소개·도움말·홍보 센터·API·채용 정보·<br>개인정보처리방침·약관·위치·언어·<br><br>© 2022 INSTAGRAM FROM META
             </div>
         </div>
-{#ㅡㅡㅡㅡ회원추천피드 끝ㅡㅡㅡㅡ#}
 </div>
 
-
+{#ㅡㅡㅡㅡ 모달창 ㅡㅡㅡㅡ#}
 <div id="modal_add_feed" class="modal_overlay">
     <div class="modal_window">
         <div class="modal_title">
@@ -433,9 +429,6 @@
                     <button type="button" class="btn btn-default modal_btn">보내기</button>
                 </div>
             </div>
-{#            <div class="modal_image_review_close">#}
-{#                <span id="modal_image_review_close" class="material-icons-outlined curser">close</span>#}
-{#            </div>#}
         </div>
         <div class="modal_image_review_close">
             <span id="modal_image_review_close" class="material-icons-outlined curser">close</span>
@@ -448,8 +441,8 @@
     $('#nav_add_box').click(function () {
         {# jquery scroll 위치 이동 $('html, body').animate({scrollTop: 0}, 1);#}
         $('html, body').animate({scrollTop: 0}, 1);
-        $('.modal_overlay').css({display: 'flex'}); {#제이쿼리 css 속성값 여러개 선택가능#}
-        $('.modal_imgup_icon').css({display: 'flex'}); {#제이쿼리 css 속성값 1개만 선택가능#}
+        $('.modal_overlay').css({display: 'flex'});
+        $('.modal_imgup_icon').css({display: 'flex'});
         $('.noDrag').css({outline: '2px dashed black'});
         {#$('body').css('overflow', 'hidden'); -- 스크롤 없애기 -- #}
     });
