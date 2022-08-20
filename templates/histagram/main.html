@@ -148,7 +148,7 @@
             justify-content: center;
             transition: all .15s ease-in-out;
             width: 93%;
-            height: 90%;
+            height: 95%;
             font-size: 40px;
             color: dimgray;
         }
@@ -164,13 +164,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 18px;
-            outline: 2px dashed black;
+            border-radius: 9px;
+            outline: 3px dashed black;
             text-align: center;
             transition: all .15s ease-in-out;
             position: absolute;
             width: 93%;
-            height: 90%;
+            height: 95%;
         }
 
         .modal_image_review {
@@ -187,28 +187,43 @@
         }
 
         .modal_input {
-            border: 3.5px solid dimgray;
-            border-radius: 12px;
+            border: none;
+            border-radius: 6px;
             box-shadow: none;
             height: 103%;
             width: 100%;
-            outline: none;
+            outline: 3px dashed black;
             resize: none;
             font-size: 25px;
             padding: 10px;
         }
 
         .modal_image_review_close {
+            display: none;
             height: 99%;
         }
 
-        .modal_btn {
+        .modal_btn_outline {
             width: 100%;
-            border-radius: 8px;
+            margin: -2px;
+            background: dodgerblue;
+            outline: 3px solid dodgerblue;
+            border-radius: 6px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
-            border: 3px solid dimgray;
-            background-color: white;
+        }
+
+        .modal_btn {
+            border: none;
+            width: 100%;
+            background-color: dodgerblue;
+            color: white;
+            font-weight: bold;
+        }
+
+        textarea::placeholder {
+            color: lightgray;
+            font-weight: bold;
         }
     </style>
 
@@ -420,12 +435,12 @@
             <div class="noDrag"></div>
         </div>
         <div class="modal_image_review">
-            <div style=" display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 90%;">
+            <div style=" display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 95%;">
                 <div class="modal_input_style">
                     <textarea class="modal_input" placeholder="내용 입력.." style="font-size: 20px">
                     </textarea>
                 </div>
-                <div style="width: 100%; margin: -2px;">
+                <div class="modal_btn_outline">
                     <button type="button" class="btn btn-default modal_btn">보내기</button>
                 </div>
             </div>
@@ -443,22 +458,24 @@
         $('html, body').animate({scrollTop: 0}, 1);
         $('.modal_overlay').css({display: 'flex'});
         $('.modal_imgup_icon').css({display: 'flex'});
-        $('.noDrag').css({outline: '2px dashed black'});
+        $('.modal_image_upload').css({marginBottom:'45px'});
         {#$('body').css('overflow', 'hidden'); -- 스크롤 없애기 -- #}
     });
-
     $('#close_modal').click(function () {
         $('.modal_overlay').css({display: 'none'});
-        $('.noDrag').css('background-image', 'none');
+        $('.noDrag').css({background:'none'});
+        $('.modal_image_review_close').css({display: 'none'});
         {#$('.modal_imgup_icon').css('background-image', 'none');#}
         {#$('body').css('overflow', 'scroll'); -- 스크롤 만들기 -- #}
     });
     $('.modal_image_review_close').click(function () {
         $('.modal_overlay').css({display: 'none'});
         $('.modal_title').css({display: 'flex'});
-        $('.modal_window').css({display: 'block','flex-direction':'none'});
+        $('.modal_window').css({display: 'block'});
         $('.modal_image_review').css({display: 'none'});
-        $('.noDrag').css('background-image', 'none');
+        $('.modal_image_review_close').css({display: 'none'});
+        $('.noDrag').css({border:'none', background:'none'});
+
     });
 
     $('.noDrag')
@@ -471,11 +488,11 @@
         e.preventDefault();
 
         if (e.type == "dragover") {
-            $(e.target).css({width: "97%",height: "94%"});
+            $(e.target).css({width: "97%",height: "95%"});
             $('.modal_imgup_icon').css({filter: "blur(1.5px)"});
 
         } else {
-            $(e.target).css({filter: "none", width: "93%", height: "90%"});
+            $(e.target).css({filter: "none", width: "93%", height: "95%"});
             $('.modal_imgup_icon').css({filter: "none"});
             }
         }
@@ -495,13 +512,12 @@
         if (files[0].type.match(/image.*/)) {
             $(e.target).css({
                 "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
-                "outline": "none",
                 "background-size": "100% 100%",
-                "border":  "3px solid dimgray"
             })
-            $('.modal_title').css({'display': 'none'})
-            $('.modal_window').css({'display': 'flex','flex-direction':'row'})
-            $('.modal_image_review').css({'display': 'flex'})
+            $('.modal_title').css({display: 'none'})
+            $('.modal_window').css({display: 'flex'})
+            $('.modal_image_review').css({display: 'flex'})
+            $('.modal_image_review_close').css({display: 'block'});
             $('.modal_input').val('');
         } else {
             alert('이미지 파일이 아닙니다.');
@@ -516,7 +532,6 @@
         });
     });
 
-    {# 영상시간 4시간 26분 30초#}
 </script>
 
 <!-- Option 1: Bootstrap Bundle with Popper -->
