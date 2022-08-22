@@ -15,17 +15,19 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from content.views import Main,UploadFeed
+from django.urls import path, include
+from content.views import Main
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 
 urlpatterns = [
-   path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', Main.as_view()),
-    path('content/upload', UploadFeed.as_view())
+    path('main', Main.as_view()),
+    path('content/', include('content.urls')), # 다른 앱 파일을 incloud로 불러오기
+    path('user/', include('user.urls')),
 ]
 
 

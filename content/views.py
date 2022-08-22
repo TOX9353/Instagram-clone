@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from histagram.settings import MEDIA_ROOT
 from content.models import Feed
+
+
 # Create your views here.
 
 class Main(APIView):
@@ -12,6 +14,7 @@ class Main(APIView):
         feed_list = Feed.objects.all().order_by('-id')
 
         return render(request, "histagram/main.html", context=dict(feeds=feed_list))
+
 
 class UploadFeed(APIView):
     def post(self, request):
